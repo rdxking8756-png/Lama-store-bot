@@ -1,7 +1,6 @@
 (() => {
   const config = window.LAMA_VERIFY_CONFIG || {};
   const telegram = window.Telegram && window.Telegram.WebApp;
-  const loader = document.getElementById("loader");
   const statusText = document.getElementById("status-text");
   const title = document.getElementById("title");
   const retryBtn = document.getElementById("retry-button");
@@ -22,12 +21,7 @@
     status.className = "status show " + type;
   }
 
-  function hideLoader() {
-    loader.style.display = "none";
-  }
-
   function showRetry(message) {
-    hideLoader();
     statusText.textContent = message || "Verification failed. Please try again.";
     title.textContent = "Verification Failed";
     retryBtn.style.display = "block";
@@ -35,7 +29,6 @@
   }
 
   function showSuccess() {
-    hideLoader();
     statusText.textContent = "Your device has been verified. You can close this window now.";
     title.textContent = "Verified ✓";
     
@@ -46,8 +39,7 @@
     
     showStatus("Device verified successfully!", "done");
     
-    // Auto-close after 2 seconds
-    setTimeout(() => {
+    setTimeout(function() {
       if (telegram) {
         telegram.close();
       }
@@ -67,6 +59,7 @@
     }
 
     statusText.textContent = "Completing verification...";
+    showStatus("Verifying...", "loading");
 
     fetch(config.apiUrl.replace(/\/$/, "") + "/api/verify", {
       method: "POST",
@@ -76,28 +69,32 @@
         turnstile_token: token
       })
     })
-    .then(response => response.json())
-    .then(result => {
+    .then(function(response) { return response.json(); })
+    .then(function(result) {
       if (result.success) {
         showSuccess();
       } else {
         showRetry(result.message || "Verification failed.");
-        if (turnstileWidgetId !== null && window.turnstile) {
-          window.turnstile.reset(turnstileWidgetId);
-        }
+        resetTurnstile();
       }
     })
-    .catch(error => {
+    .catch(function(error) {
       showRetry(error.message || "Network error. Try again.");
-      if (turnstileWidgetId !== null && window.turnstile) {
-        window.turnstile.reset(turnstileWidgetId);
-      }
+      resetTurnstile();
     });
+  }
+
+  function resetTurnstile() {
+    if (turnstileWidgetId !== null && window.turnstile) {
+      try {
+        window.turnstile.reset(turnstileWidgetId);
+      } catch(e) {}
+    }
   }
 
   function renderChallenge() {
     if (!window.turnstile) {
-      setTimeout(renderChallenge, 100);
+      setTimeout(renderChallenge, 200);
       return;
     }
 
@@ -106,55 +103,39 @@
       return;
     }
 
-    turnstileWidgetId = window.turnstile.render("#turnstile-container", {
-      sitekey: config.turnstileSiteKey,
-      theme: "light",
-      size: "invisible",
-      callback(token) {
-        // Challenge passed — verify now
-        doVerify(token);
-      },
-      "expired-callback"() {
-        showRetry("Challenge expired. Retrying...");
-        setTimeout(() => {
-          if (turnstileWidgetId !== null && window.turnstile) {
-            window.turnstile.reset(turnstileWidgetId);
-            window.turnstile.execute(turnstileWidgetId);
-          }
-        }, 500);
-      },
-      "error-callback"() {
-        showRetry("Security check failed. Try again.");
-      }
-    });
+    turnstileContainer.style.display = "block";
+    statusText.textContent = "Complete the security check below to continue.";
+    title.textContent = "Device Verification";
 
-    // Auto-execute invisible challenge
-    setTimeout(() => {
-      if (turnstileWidgetId !== null && window.turnstile) {
-        window.turnstile.execute(turnstileWidgetId);
-      }
-    }, 500);
+    try {
+      turnstileWidgetId = window.turnstile.render("#turnstile-container", {
+        sitekey: config.turnstileSiteKey,
+        theme: "light",
+        callback: function(token) {
+          doVerify(token);
+        },
+        "expired-callback": function() {
+          showRetry("Challenge expired. Please try again.");
+        },
+        "error-callback": function() {
+          showRetry("Security check failed. Please refresh and try again.");
+        }
+      });
+    } catch(e) {
+      showRetry("Failed to load security check. Refresh page.");
+    }
   }
 
-  retryBtn.addEventListener("click", () => {
+  retryBtn.addEventListener("click", function() {
     retryBtn.style.display = "none";
     status.className = "status";
-    statusText.textContent = "Verifying your device...";
+    statusText.textContent = "Complete the security check below to continue.";
     title.textContent = "Device Verification";
-    loader.style.display = "block";
-    
-    if (turnstileWidgetId !== null && window.turnstile) {
-      window.turnstile.reset(turnstileWidgetId);
-      setTimeout(() => {
-        window.turnstile.execute(turnstileWidgetId);
-      }, 300);
-    } else {
-      renderChallenge();
-    }
+    turnstileContainer.style.display = "block";
+    resetTurnstile();
   });
 
-  window.addEventListener("load", () => {
-    statusText.textContent = "Verifying your device...";
+  window.addEventListener("load", function() {
     renderChallenge();
   });
 })();
