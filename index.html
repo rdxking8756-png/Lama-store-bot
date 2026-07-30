@@ -9,26 +9,23 @@
   <title>LAMA Device Verification</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 </head>
 <body>
   <main class="shell">
     <section class="card">
       <div class="device" aria-hidden="true"><span></span></div>
       <p class="eyebrow">LAMA STORE SECURITY</p>
-      <h1 id="title">Device Verification</h1>
-      <p class="intro" id="status-text">
+      <h1>Device Verification</h1>
+      <p class="intro">
         Complete the security check below to continue.
       </p>
-      <div id="turnstile-container"></div>
-      <button id="retry-button" type="button" style="display:none;">Try Again</button>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAEBYBxH_v0tSy-2w5QzfEZzunTI" data-theme="light" data-callback="onTurnstileCallback" data-error-callback="onTurnstileError"></div>
       <p id="status" class="status"></p>
       <p class="privacy">
         We verify your Telegram session and challenge result. No password is requested.
       </p>
-      
-      <!-- 🥀 RDX KING WATERMARK — @itzrdxking 🖤 -->
-      <p class="watermark">❤️Made by <span>@itzrdxking</span></p>
+      <p class="watermark">Made by 🔐 <span>@itzrdxking</span></p>
     </section>
   </main>
   <script src="config.js"></script>
