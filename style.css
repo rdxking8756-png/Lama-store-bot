@@ -36,7 +36,6 @@ body {
   background: rgba(255, 255, 255, .97);
   box-shadow: 0 24px 70px rgba(49, 76, 116, .14);
   text-align: center;
-  position: relative;
 }
 
 .device {
@@ -87,116 +86,21 @@ h1 {
 
 .intro {
   max-width: 370px;
-  margin: 18px auto 20px;
+  margin: 18px auto 24px;
   color: var(--muted);
   font-size: 16px;
   line-height: 1.55;
 }
 
-#turnstile-container {
-  min-height: 75px;
+.cf-turnstile {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 10px 0;
-}
-
-button {
-  width: 100%;
-  min-height: 56px;
-  margin-top: 18px;
-  border: 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--blue), #3979f1);
-  color: white;
-  font-size: 17px;
-  font-weight: 750;
-  box-shadow: 0 13px 28px rgba(39, 104, 234, .26);
-  cursor: pointer;
-  transition: all 0.3s ease;
+  min-height: 75px;
 }
 
 .status {
   display: none;
   margin: 16px 0 0;
-  padding: 11px 13px;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.status.show { display: block; }
-.status.done { background: #e9f9ef; color: var(--green); }
-.status.error { background: #fff0f0; color: #a52d32; }
-.status.loading { background: #eef5ff; color: var(--blue); }
-
-.privacy {
-  margin: 16px auto 0;
-  color: #8a96a8;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-/* 🥀 RDX KING WATERMARK — @itzrdxking 🖤 */
-.watermark {
-  margin: 22px auto 0;
-  padding-top: 14px;
-  border-top: 1px solid rgba(153, 174, 204, .2);
-  color: #a0aec0;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .06em;
-}
-
-.watermark span {
-  color: var(--blue);
-  font-weight: 700;
-  letter-spacing: .04em;
-}
-
-@media (max-width: 420px) {
-  .shell { padding: 14px; }
-  .card { padding: 30px 16px 22px; border-radius: 26px; }
-  .device { width: 72px; height: 72px; margin-bottom: 18px; }
-  .watermark { font-size: 10px; }
-}h1 {
-  margin: 0;
-  font-size: clamp(32px, 8vw, 43px);
-  line-height: 1.1;
-  letter-spacing: -.04em;
-}
-
-.intro {
-  max-width: 370px;
-  margin: 18px auto 28px;
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-button {
-  width: 100%;
-  min-height: 58px;
-  margin-top: 22px;
-  border: 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--blue), #3979f1);
-  color: white;
-  font-size: 18px;
-  font-weight: 750;
-  box-shadow: 0 13px 28px rgba(39, 104, 234, .26);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button.success {
-  background: linear-gradient(135deg, var(--green), #1a8c48);
-  box-shadow: 0 13px 28px rgba(21, 115, 59, .26);
-}
-
-.status {
-  display: none;
-  margin: 18px 0 0;
   padding: 11px 13px;
   border-radius: 12px;
   font-size: 14px;
@@ -215,8 +119,23 @@ button.success {
   line-height: 1.5;
 }
 
+.watermark {
+  margin: 20px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(153, 174, 204, .2);
+  color: #a0aec0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.watermark span {
+  color: var(--blue);
+  font-weight: 700;
+}
+
 @media (max-width: 420px) {
   .shell { padding: 14px; }
-  .card { padding: 34px 18px 24px; border-radius: 26px; }
-  .device { width: 76px; height: 76px; margin-bottom: 20px; }
+  .card { padding: 30px 16px 22px; border-radius: 26px; }
+  .device { width: 72px; height: 72px; margin-bottom: 18px; }
 }
