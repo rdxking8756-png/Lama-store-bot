@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="telegram-web-app-theme-color" content="#eef4fb">
+  <meta name="telegram-web-app-header-color" content="#eef4fb">
+  <title>LAMA Device Verification</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="card">
+      <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p class="loading-text">Verifying your device...</p>
+      </div>
+      <div class="device" aria-hidden="true"><span></span></div>
+      <p class="eyebrow">LAMA STORE SECURITY</p>
+      <h1 id="title">Device Verification</h1>
+      <p class="intro" id="status-text">
+        Please wait while we verify your identity securely.
+      </p>
+      <div id="turnstile-container" style="display:none;"></div>
+      <button id="retry-button" type="button" style="display:none;">Retry Verification</button>
+      <p id="status" class="status"></p>
+      <p class="privacy">
+        We verify your Telegram session and challenge result. No password is requested.
+      </p>
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="verify.js"></script>
+</body>
+</html>
